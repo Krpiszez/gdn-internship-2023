@@ -1,0 +1,6 @@
+
+server:
+  port: 8080
+
+api:
+  base-url: "https://your-api-base-url.com"
