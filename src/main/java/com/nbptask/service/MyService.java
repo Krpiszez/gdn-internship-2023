@@ -11,4 +11,6 @@ public interface MyService {
     Double getAvgExchangeRate(LocalDate date, String code);
 
     String getMaxAndMinNQuot(String code, Integer quotation);
+
+    String majorBetweenBuyAndAskRate(String code, Integer quotation);
 }

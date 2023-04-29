@@ -29,8 +29,13 @@ public class MyController {
         return myService.getAvgExchangeRate(date, code);
     }
 
-    @GetMapping("/{code}/{quotation}")
+    @GetMapping("/A/{code}/{quotation}")
     public String getMaxAndMin(@PathVariable("code") String code, @PathVariable("quotation") Integer quotation){
         return myService.getMaxAndMinNQuot(code, quotation);
+    }
+
+    @GetMapping("/C/{code}/{quotation}")
+    public String majorBetweenBuyAndAskRate(@PathVariable("code") String code, @PathVariable("quotation") Integer quotation){
+        return myService.majorBetweenBuyAndAskRate(code, quotation);
     }
 }

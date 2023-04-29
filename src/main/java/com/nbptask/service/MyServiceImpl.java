@@ -36,7 +36,7 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public String getMaxAndMinNQuot(String code, Integer quotation) {
-        String url = baseUrl + "/exchangerates/rates/A/" + code + "/last/" + quotation;
+        String url = baseUrl + "/exchangerates/rates/A/" + code + "/last/" + quotation + "?format=json";
         String json = restTemplate.getForObject(url, String.class);
         JSONObject obj = new JSONObject(json);
         JSONArray arr = obj.getJSONArray("rates");
@@ -56,6 +56,26 @@ public class MyServiceImpl implements MyService {
         JSONObject result = new JSONObject();
         result.put("Min Average Value For " + code, minMid);
         result.put("Max Average Value For " + code, maxMid);
+        return result.toString();
+    }
+
+    @Override
+    public String majorBetweenBuyAndAskRate(String code, Integer quotation) {
+        String url = baseUrl + "/exchangerates/rates/C/" + code + "/last/" + quotation;
+        String json = restTemplate.getForObject(url, String.class);
+        JSONObject obj = new JSONObject(json);
+        JSONArray arr = obj.getJSONArray("rates");
+        double difference = 0;
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject objIt = arr.getJSONObject(i);
+            double ask = objIt.getDouble("ask");
+            double bid = objIt.getDouble("bid");
+            if (ask-bid > difference){
+                difference = ask - bid;
+            }
+        }
+        JSONObject result = new JSONObject();
+        result.put("Min Difference Ask-Bid Value For " + code, String.format("%.3f",difference));
         return result.toString();
     }
 
