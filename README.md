@@ -1,55 +1,58 @@
-# Backend oriented task (Java/Python/JS/.NET)
+# Exchange Rates API
 
-## Description
+This is a simple API that provides exchange rate information for a given currency code and date. The API is built using Spring Boot and retrieves data from an external data source.
 
-Create a project, a simple runnable local server, that exposes some endpoints which take arguments and return plain simple data after performing certain internal operations.
-The goal is to query data from the Narodowy Bank Polski's public APIs and return relevant information from them. User manual: http://api.nbp.pl/
+## Usage
 
-## Considerations
+To use the API, send a GET request to one of the following endpoints:
 
-- Table A only will be used for average exchange rates and table C for buy and sell rates. Reference: https://nbp.pl/en/statistic-and-financial-reporting/rates/
-- Operations and examples can be found in the manual.
-- Weekend dates or holidays, for example, do not return data.
+- `/exchangerates/{currencyCode}/A/{date}` - Returns the average exchange rate for the given currency code on the specified date.
+- `/exchangerates/A/{code}/{quotation}` - Returns the maximum and minimum exchange rate for the given currency code and quotation.
+- `/exchangerates/C/{code}/{quotation}` - Returns the major exchange rate between buy and ask for the given currency code and quotation.
 
-## Required operations
+### Request Parameters
 
-Provide a separate endpoint for each operation:
-1. Given a date (formatted YYYY-MM-DD) and a currency code (list: https://nbp.pl/en/statistic-and-financial-reporting/rates/table-a/), provide its average exchange rate.
-2. Given a currency code and the number of last quotations N (N <= 255), provide the max and min average value (every day has a different average).
-3. Given a currency code and the number of last quotations N (N <= 255), provide the major difference between the buy and ask rate (every day has different rates).
+- `currencyCode` - The ISO currency code (e.g. USD, GBP, EUR).
+- `date` - The date for which exchange rate data is requested (in the format yyyy-MM-dd).
+- `code` - The ISO currency code (e.g. USD, GBP, EUR).
+- `quotation` - The quotation to use for the exchange rate (1 for buy rate, 2 for sell rate).
 
-## Optional
+### Example Request
 
-The following features are not mandatory, but considered as a plus:
-- Unit/integration tests.
-- Docker image of the whole application.
-- Swagger UI or any other simple front-end (with e.g. React, Angular).
+GET exchangerates/GBP/A/2023-01-02 HTTP/1.1
+Host: localhost:8080
 
 
-## Guidelines
+### Example Response
 
-- It shouldn't take more than 1 day.
-- Decide on how to decompose application layers.
-- Pay attention to overall coding style and errors handling.
-- Output format is not specified.
-- No authentication nor security needed.
-- Add readme with relevant information about how to run it and examples.
+200 OK
+Content-Type: application/json
 
-RESTful web API design reference: https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
+5.2768 
 
-## Criteria
 
-Provide succinct and direct instructions in the main readme to start the server and test the operations.
 
-### Example
+## Building and Running
 
-- To start the server, run this command:
-```
-python -m http.server
-```
-- To query operation 1, run this command (which should have the value 5.2768 as the returning information):
-```
-curl http://localhost:8888/exchanges/GBP/2023-01-02
-```
+To build and run the API, follow these steps:
 
-Attention will be put on correct behaviour of operations, application structure, and general code quality (readability, naming, etc.).  
+### 1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/exchange-rates-api.git
+
+2. Navigate to the project directory:
+
+cd exchange-rates-api
+
+3. Build the project:
+
+mvn clean package
+
+4. Run the project:
+
+mvn spring-boot:run
+
+The API will be accessible at http://localhost:8080.
+
+
